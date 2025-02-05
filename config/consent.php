@@ -26,7 +26,7 @@ return [
             'label' => 'maps',
             'description' => 'maps_description',
             'required' => false,
-            'gtag_key' => 'functionality_storage',
+            'gtag_key' => 'maps',
             'cookies' => ['NID', 'SID', 'SAPISID', 'APISID', 'SSID', 'HSID', '1P_JAR', 'OTZ', 'SEARCH_SAMESITE'],
         ],
         'analytics' => [

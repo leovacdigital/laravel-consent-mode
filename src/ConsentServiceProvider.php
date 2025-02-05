@@ -13,22 +13,23 @@ class ConsentServiceProvider extends ServiceProvider
             __DIR__ . '/../config/consent.php' => config_path('consent.php'),
         ], 'consent-config');
 
-        // Objavljivanje JavaScript i CSS fajlova (ISPRAVLJENE PUTANJE!)
+        // Objavljivanje JavaScript i CSS fajlova
         $this->publishes([
             __DIR__ . '/../src/Assets/cookie.js' => public_path('js/cookie.js'),
             __DIR__ . '/../src/Assets/cookie.css' => public_path('css/cookie.css'),
         ], 'consent-assets');
 
         // Učitavanje prevoda
-        $this->loadTranslationsFrom(__DIR__ . '/Resources/lang', 'cookie-consent');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'cookie-consent');
 
-        // Publikovanje prevoda za aplikaciju izmena
+        // Publikovanje prevoda
         $this->publishes([
-            __DIR__ . '/Resources/lang' => lang_path('vendor/cookie-consent'),
+            __DIR__ . '/../resources/lang' => lang_path('vendor/cookie-consent'),
         ], 'cookie-consent-translations');
 
-        // Učitavanje Blade pogleda (ISPRAVLJENA PUTANJA!)
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'consent');
+        // **Prvo koristi objavljene Blade view-ove ako postoje, pa tek onda vendor view-ove**
+        $this->loadViewsFrom(resource_path('views/vendor/cookie-consent'), 'cookie-consent');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'cookie-consent');
 
         // Omogući publikovanje view-ova
         $this->publishes([
