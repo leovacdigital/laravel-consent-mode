@@ -29,6 +29,11 @@ class ConsentServiceProvider extends ServiceProvider
 
         // Učitavanje Blade pogleda (ISPRAVLJENA PUTANJA!)
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'consent');
+
+        // Omogući publikovanje view-ova
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/cookie-consent'),
+        ], 'cookie-consent-views');
     }
 
     public function register()
