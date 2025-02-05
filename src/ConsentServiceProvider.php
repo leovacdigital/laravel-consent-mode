@@ -22,7 +22,7 @@ class ConsentServiceProvider extends ServiceProvider
         // Učitavanje prevoda
         $this->loadTranslationsFrom(__DIR__ . '/Resources/lang', 'cookie-consent');
 
-        // Publikovanje prevoda za aplikaciju
+        // Publikovanje prevoda za aplikaciju izmena
         $this->publishes([
             __DIR__ . '/Resources/lang' => lang_path('vendor/cookie-consent'),
         ], 'cookie-consent-translations');
