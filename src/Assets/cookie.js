@@ -109,7 +109,6 @@ function denyCookies() {
 
   Object.keys(categories).forEach((category) => {
     let gtagKey = categories[category].gtag_key;
-    console.log(categories[category].required);
     if (categories[category].required || gtagKey === "security_storage") {
       // Obavezni kolačići i security_storage ostaju "granted"
       document.cookie =
@@ -150,23 +149,15 @@ function denyCookies() {
 }
 
 function loadGTM() {
-  console.log("🔄 Ponovno učitavanje Google Tag Managera...");
-
   var script = document.createElement("script");
   script.async = true;
   script.src =
     "https://www.googletagmanager.com/gtm.js?id={{ config('consent.gtm_id') }}";
   document.head.appendChild(script);
-
-  console.log("✅ GTM ponovo učitan!");
 }
 
 function checkStoredConsent() {
   if (document.cookie.includes("cookie_consent=accepted")) {
-    console.log(
-      "✅ Korisnik je već prihvatio kolačiće, ponovo ažuriramo consent..."
-    );
-
     let consentData = {};
     let categories = window.categories; // Koristimo window.categories umesto @json
 
@@ -194,7 +185,6 @@ window.onload = function () {
   checkStoredConsent();
 };
 function openCookieModal() {
-  console.log("Otvaramo cookie modal...");
   document.getElementById("cookie-settings").classList.remove("hidden");
 }
 
