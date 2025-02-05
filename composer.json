@@ -1,0 +1,29 @@
+{
+  "name": "radosavleovac/laravel-consent-mode",
+  "description": "GDPR Compliant Google Consent Mode V2 for Laravel",
+  "type": "library",
+  "version": "1.0.0",
+  "require": {
+    "illuminate/support": "^11.41"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Radosavleovac\\LaravelConsentMode\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Radosavleovac\\LaravelConsentMode\\ConsentServiceProvider"
+      ]
+    }
+  },
+  "authors": [
+    {
+      "name": "Radosav Leovac",
+      "email": "rleovac@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable"
+}
