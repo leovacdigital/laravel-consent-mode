@@ -2,7 +2,17 @@
 
 **GDPR Compliant Google Consent Mode V2 for Laravel**
 
-This package provides an easy way to implement **Google Consent Mode V2** in Laravel applications while complying with GDPR regulations.
+This package provides an easy way to implement Google Consent Mode V2 in Laravel applications while complying with GDPR regulations. It supports TailwindCSS for styling and offers customizable cookie consent management.
+
+🚀 Features
+
+✅ Google Consent Mode V2 compliant
+✅ Supports TailwindCSS for styling
+✅ Easy integration with Laravel
+✅ Customizable cookie categories
+✅ Consent-based loading of Google Tag Manager (GTM)
+✅ Multi-language support
+✅ Publishable assets (JS, CSS, Views, and Config)
 
 ---
 
@@ -106,15 +116,13 @@ Include the following Blade directive in your main layout, near or in footer (e.
 @include('cookie-consent::cookie-banner')
 ```
 
-### 2️⃣ Add the Tag after <head> start
-
-You can add the modal for cookie settings anywhere in your layout:
+### 2️⃣ Add the Google Tag after <head>
 
 ```blade
 @include('cookie-consent::gtm')
 ```
 
-### 2️⃣ Add the noscript Tag after <body> start
+### 2️⃣ Add the noscript Tag after <body>
 
 You can add the modal for cookie settings anywhere in your layout:
 
