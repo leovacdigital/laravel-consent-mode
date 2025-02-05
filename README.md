@@ -166,8 +166,18 @@ To enable visitors to change settings you can place a button in your code
 To display map after user gave permission you can use
 
 ```blade
-@if(isset($_COOKIE['maps_cookies']))
-<iframe>Code for map</iframe>
+@if(isset($_COOKIE['maps_cookies']) && $_COOKIE['maps_cookies'] === 'granted')
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5249.98288205065!2d2.291906376485278!3d48.85837360070764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sEiffelturm!5e0!3m2!1sde!2sat!4v1738785000996!5m2!1sde!2sat"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    @else
+    <div class="bg-gray-200 p-4 text-center">
+        <p>{{ __('cookie-consent::messages.enable_map') }}</p>
+        <button onclick="openCookieModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            {{ __('cookie-consent::messages.cookie_settings') }}
+        </button>
+    </div>
 @endif
 ```
 
