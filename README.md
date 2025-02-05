@@ -154,6 +154,23 @@ function acceptAllCookies() {
 - Modify **translations** in `resources/lang/vendor/cookie-consent/`
 - Adjust **CSS styles** in `public/css/cookie.css`
 
+To enable visitors to change settings you can place a button in your code
+
+```blade
+<!-- Open modal -->
+<button onclick="openCookieModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+    Settings
+</button>
+```
+
+To display map after user gave permission you can use
+
+```blade
+@if(isset($_COOKIE['maps_cookies']))
+<iframe>Code for map</iframe>
+@endif
+```
+
 ---
 
 ## 📄 License
