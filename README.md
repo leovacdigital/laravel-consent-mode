@@ -8,8 +8,8 @@ This package enables Google Consent Mode V2 implementation in Laravel applicatio
 
 Run the following command in your Laravel project:
 
-composer require radosavleovac/laravel-consent-mode
-
+<code>composer require radosavleovac/laravel-consent-mode
+</code>
 Publish Configuration Files
 
 After installing the package, publish the necessary files to customize the settings:
