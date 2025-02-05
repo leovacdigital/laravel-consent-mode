@@ -185,6 +185,8 @@ To display map after user gave permission you can use
 
 ## 📄 License
 
-This package is licensed under the [MIT License](LICENSE).
+This package is licensed under the MIT licence.
+
+To do - tutorial how to setup Google Tag manager
 
 ---
