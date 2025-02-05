@@ -116,15 +116,13 @@ Include the following Blade directive in your main layout, near or in footer (e.
 @include('cookie-consent::cookie-banner')
 ```
 
-### 2️⃣ Add the Google Tag after <head>
+### 2️⃣ Add the Google Tag after head opening
 
 ```blade
 @include('cookie-consent::gtm')
 ```
 
-### 2️⃣ Add the noscript Tag after <body>
-
-You can add the modal for cookie settings anywhere in your layout:
+### 2️⃣ Add the noscript Tag after body opening
 
 ```blade
 @include('cookie-consent::gtm-noscript')
