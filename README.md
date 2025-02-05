@@ -77,24 +77,13 @@ return [
     'cookie_expiration_days' => env('COOKIE_EXPIRATION_DAYS', 365),
 
     'categories' => [
-        'necessary' => [
-            'label' => 'Necessary Cookies',
-            'required' => true,
-            'gtag_key' => 'security_storage',
-            'cookies' => ['XSRF-TOKEN', 'laravel_session'],
-        ],
-        'analytics' => [
-            'label' => 'Analytics Cookies',
-            'required' => false,
-            'gtag_key' => 'analytics_storage',
-            'cookies' => ['_ga', '_gid', '_gat'],
-        ],
-        'ads' => [
-            'label' => 'Marketing Cookies',
-            'required' => false,
-            'gtag_key' => 'ad_storage',
-            'cookies' => ['_gads', '_fbp'],
-        ],
+            'necessary' => [
+            'label' => 'necessary', // This key is used in the cookie settings modal
+            'description' => 'necessary_description', // This key is used in the cookie settings modal
+            'required' => true, // This key is used in the cookie settings modal
+            'gtag_key' => 'security_storage', // This key is used in the Google Tag Manager
+            'cookies' => ['XSRF-TOKEN', 'laravel_session'], // Cookies that are set when the category is accepted
+        ]
     ],
 
     'default_consent' => [
@@ -111,31 +100,27 @@ return [
 
 ### 1️⃣ Add the consent banner
 
-Include the following Blade directive in your main layout (e.g., `resources/views/layouts/app.blade.php`):
+Include the following Blade directive in your main layout, near or in footer (e.g., `resources/views/layouts/app.blade.php`):
 
 ```blade
-@include('consent::cookie-banner')
+@include('cookie-consent::cookie-banner')
 ```
 
-### 2️⃣ Add the consent modal
+### 2️⃣ Add the Tag after <head> start
 
 You can add the modal for cookie settings anywhere in your layout:
 
 ```blade
-@include('consent::cookie-settings')
+@include('cookie-consent::gtm')
 ```
 
-### 3️⃣ JavaScript
+### 2️⃣ Add the noscript Tag after <body> start
 
-Ensure that the JavaScript file is included in your layout:
+You can add the modal for cookie settings anywhere in your layout:
 
 ```blade
-<script src="{{ asset('js/cookie.js') }}"></script>
+@include('cookie-consent::gtm-noscript')
 ```
-
-This script will handle cookie consent logic and update Google Tag Manager accordingly.
-
----
 
 ## 🎯 Example: Handling Consent in JavaScript
 
