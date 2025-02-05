@@ -36,9 +36,9 @@
 </div>
 
 <!-- Modal za podešavanje kolačića -->
-<div id="cookie-settings" class="fixed z-2 inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md relative">
-        <h2 class="text-lg font-semibold mb-4">{{ __('cookie-consent::messages.cookie_settings') }}</h2>
+<div id="cookie-settings" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md relative overflow-y-auto max-h-[90vh]">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ __('cookie-consent::messages.cookie_settings') }}</h2>
 
         @foreach(config('consent.categories') as $category => $details)
         <div class="flex flex-col items-start mb-3">
@@ -51,7 +51,7 @@
                     {{ __('cookie-consent::cookies.' . $details['label']) }}
                 </label>
             </div>
-            <p>{{ __('cookie-consent::cookies.' . $details['description']) }}</p>
+            <p class="text-gray-800">{{ __('cookie-consent::cookies.' . $details['description']) }}</p>
         </div>
         @endforeach
 
