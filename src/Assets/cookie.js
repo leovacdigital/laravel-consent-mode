@@ -1,45 +1,47 @@
+// Prihvatanje svih kolačića
 function acceptAllCookies() {
   Object.keys(window.categories).forEach((category) => {
     document.cookie =
       category + "_cookies=granted; path=/; max-age=" + 365 * 24 * 60 * 60;
   });
 
-  gtag("consent", "update", {
-    ad_storage: "granted",
-    analytics_storage: "granted",
-    personalization_storage: "granted",
-    security_storage: "granted",
+  let consentData = {};
+  Object.keys(window.categories).forEach((category) => {
+    consentData[window.categories[category].gtag_key] = "granted";
   });
 
-  // Dodajemo globalni cookie_consent flag
+  gtag("consent", "update", consentData);
+
   document.cookie =
     "cookie_consent=accepted; path=/; max-age=" + 365 * 24 * 60 * 60;
 
   document.getElementById("cookie-banner").classList.add("hidden");
   location.reload();
+  console.log("🍪 Svi kolačići su prihvaćeni.");
 }
 
+// Prihvatanje samo neophodnih kolačića
 function acceptEssentialCookies() {
+  let consentData = {};
   Object.keys(window.categories).forEach((category) => {
     let isRequired =
       window.categories[category].required ||
       window.categories[category].gtag_key === "security_storage";
+
     document.cookie =
       category +
       "_cookies=" +
       (isRequired ? "granted" : "denied") +
       "; path=/; max-age=" +
       365 * 24 * 60 * 60;
+
+    consentData[window.categories[category].gtag_key] = isRequired
+      ? "granted"
+      : "denied";
   });
 
-  gtag("consent", "update", {
-    ad_storage: "denied",
-    analytics_storage: "denied",
-    personalization_storage: "denied",
-    security_storage: "granted",
-  });
+  gtag("consent", "update", consentData);
 
-  // Dodajemo globalni cookie_consent flag
   document.cookie =
     "cookie_consent=accepted; path=/; max-age=" + 365 * 24 * 60 * 60;
 
@@ -47,22 +49,21 @@ function acceptEssentialCookies() {
   location.reload();
 }
 
+// Prihvatanje selektovanih kolačića
 function acceptSelectedCookies() {
-  let categories = window.categories;
   let consentData = {};
 
-  Object.keys(categories).forEach((category) => {
+  Object.keys(window.categories).forEach((category) => {
     let checkbox = document.getElementById(category + "_cookies");
     let value = checkbox && checkbox.checked ? "granted" : "denied";
 
     if (
-      categories[category].required ||
-      categories[category].gtag_key === "security_storage"
+      window.categories[category].required ||
+      window.categories[category].gtag_key === "security_storage"
     ) {
-      value = "granted"; // Obavezni kolačići i security_storage su uvek dozvoljeni
+      value = "granted"; // Obavezni kolačići su uvek dozvoljeni
     }
 
-    // Postavljanje kolačića
     document.cookie =
       category +
       "_cookies=" +
@@ -70,32 +71,22 @@ function acceptSelectedCookies() {
       "; path=/; max-age=" +
       365 * 24 * 60 * 60;
 
-    // Dodavanje consent podataka za GTM
-    consentData[categories[category].gtag_key] = value;
+    consentData[window.categories[category].gtag_key] = value;
 
-    // Brisanje kolačića ako je korisnik odbio kategoriju
-    if (value === "denied" && categories[category].cookies) {
-      categories[category].cookies.forEach((cookie) => {
-        document.cookie =
-          cookie + "=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      });
+    if (value === "denied") {
+      deleteCategoryCookies(category);
     }
   });
 
-  // Osiguravamo da security_storage uvek ostane "granted"
   consentData["security_storage"] = "granted";
 
-  // Dodajemo globalni cookie_consent flag
   document.cookie =
     "cookie_consent=accepted; path=/; max-age=" + 365 * 24 * 60 * 60;
 
-  // Ažuriranje Google Consent Mode
   gtag("consent", "update", consentData);
 
-  // Sakrivanje banera
   document.getElementById("cookie-settings").style.display = "none";
 
-  // Ako je GTM već učitan, osvežavanje stranice kako bi se ažurirao
   if (!document.querySelector('script[src*="googletagmanager.com/gtm.js"]')) {
     loadGTM();
   }
@@ -103,44 +94,36 @@ function acceptSelectedCookies() {
   location.reload();
 }
 
+// Odbijanje svih neobaveznih kolačića
 function denyCookies() {
-  let categories = window.categories;
   let consentData = {};
 
-  Object.keys(categories).forEach((category) => {
-    let gtagKey = categories[category].gtag_key;
-    if (categories[category].required || gtagKey === "security_storage") {
-      // Obavezni kolačići i security_storage ostaju "granted"
+  Object.keys(window.categories).forEach((category) => {
+    let gtagKey = window.categories[category].gtag_key;
+
+    if (
+      window.categories[category].required ||
+      gtagKey === "security_storage"
+    ) {
       document.cookie =
         category + "_cookies=granted; path=/; max-age=" + 365 * 24 * 60 * 60;
       consentData[gtagKey] = "granted";
     } else {
-      // Ostali kolačići se postavljaju na "denied"
       document.cookie =
         category + "_cookies=denied; path=/; max-age=" + 365 * 24 * 60 * 60;
       consentData[gtagKey] = "denied";
 
-      // Brisanje kolačića ako su odbijeni
-      if (categories[category].cookies) {
-        categories[category].cookies.forEach((cookie) => {
-          document.cookie =
-            cookie + "=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        });
-      }
+      deleteCategoryCookies(category);
     }
   });
 
-  // GTM Consent Mode ažuriranje
   gtag("consent", "update", consentData);
 
-  // Sakrivanje cookie podešavanja
   document.getElementById("cookie-settings").style.display = "none";
 
-  // Dodajemo globalni cookie_consent flag
   document.cookie =
     "cookie_consent=accepted; path=/; max-age=" + 365 * 24 * 60 * 60;
 
-  // Osvežavanje stranice kako bi promene stupile na snagu
   if (!sessionStorage.getItem("consentReloaded")) {
     sessionStorage.setItem("consentReloaded", "true");
     location.reload();
@@ -148,6 +131,22 @@ function denyCookies() {
   location.reload();
 }
 
+// 🛑 Brisanje svih kolačića iz određene kategorije
+function deleteCategoryCookies(category) {
+  if (window.categories[category] && window.categories[category].cookies) {
+    window.categories[category].cookies.forEach((cookie) => {
+      document.cookie =
+        cookie + "=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie =
+        cookie +
+        "=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" +
+        location.hostname +
+        ";";
+    });
+  }
+}
+
+// 🚀 Učitavanje GTM ako nije već učitan
 function loadGTM() {
   var script = document.createElement("script");
   script.async = true;
@@ -156,34 +155,28 @@ function loadGTM() {
   document.head.appendChild(script);
 }
 
+// 🔄 Provera da li postoji već sačuvana saglasnost i ažuriranje Google Consent Mode-a
 function checkStoredConsent() {
   if (document.cookie.includes("cookie_consent=accepted")) {
     let consentData = {};
-    let categories = window.categories; // Koristimo window.categories umesto @json
-
-    Object.keys(categories).forEach((category) => {
-      consentData[categories[category].gtag_key] = document.cookie.includes(
-        category + "_cookies=granted"
-      )
-        ? "granted"
-        : "denied";
+    Object.keys(window.categories).forEach((category) => {
+      consentData[window.categories[category].gtag_key] =
+        document.cookie.includes(category + "_cookies=granted")
+          ? "granted"
+          : "denied";
     });
 
     gtag("consent", "update", consentData);
 
-    // Proveravamo da li je GTM učitan
     if (!document.querySelector('script[src*="googletagmanager.com/gtm.js"]')) {
-      loadGTM(); // Ako nije, učitavamo ga ponovo
+      loadGTM();
     }
   } else {
     console.log("❌ Korisnik još nije prihvatio kolačiće.");
   }
 }
 
-// Pokrećemo proveru kada se stranica učita
-window.onload = function () {
-  checkStoredConsent();
-};
+// 📌 Funkcije za otvaranje i zatvaranje cookie podešavanja
 function openCookieModal() {
   document.getElementById("cookie-settings").classList.remove("hidden");
 }
@@ -191,3 +184,8 @@ function openCookieModal() {
 function closeCookieModal() {
   document.getElementById("cookie-settings").classList.add("hidden");
 }
+
+// 📌 Pokrećemo proveru kada se stranica učita
+window.onload = function () {
+  checkStoredConsent();
+};
