@@ -186,7 +186,7 @@ function checkStoredConsent() {
     gtag("consent", "update", consentData);
     loadGTM();
   } else {
-    document.getElementById("cookie-settings").classList.remove("hidden");
+    document.getElementById("cookie-banner").classList.remove("hidden");
   }
 }
 
