@@ -2,7 +2,7 @@
   "name": "radosavleovac/laravel-consent-mode",
   "description": "GDPR Compliant Google Consent Mode V2 for Laravel",
   "type": "library",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "require": {
     "illuminate/support": "^11.41"
   },
