@@ -34,7 +34,7 @@ return [
             'description' => 'analytics_description',
             'required' => false,
             'gtag_key' => 'analytics_storage',
-            'cookies' => ['_ga', '_gid', '_gat'],
+            'cookies' => ['_ga', '_gid', '_gat', '_ga_'],
         ],
         'ads' => [
             'label' => 'ads',
